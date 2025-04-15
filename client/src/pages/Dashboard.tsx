@@ -5,6 +5,7 @@ import DashboardSidebar from "../components/DashboardSidebar";
 import { Navigate, Outlet } from 'react-router-dom';
 import { MdAccountCircle, MdSettings } from "react-icons/md";
 import { useAuth } from "../context/AuthContext";
+import NotificationMsg from "../components/NotificationMsg";
 
 const menu:{ url: string; name: string; image: React.ReactNode }[] = [
   {
@@ -36,15 +37,18 @@ const menu:{ url: string; name: string; image: React.ReactNode }[] = [
 
 const Dashboard = () => {
   const[sidebarToggle, setSidebarToggle] = useState(false)
-  const {isAuthenticated} = useAuth()
+  const {isAuthenticated, showMsg} = useAuth()
 
   return (
-    <div className='w-full'>
+    <div className='w-full relative'>
       <DashboardNavbar sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle}/>
       <DashboardSidebar sidebarToggle={sidebarToggle} menu={menu} />
       <div className={`${sidebarToggle && "md:ml-72"} mt-4 ml-4`}>
         {isAuthenticated ? <Outlet /> : <Navigate to="/login" /> }
       </div>
+      <div hidden={showMsg} className="absolute top-10 right-0">
+            <NotificationMsg />
+        </div>
     </div>
   )
 }

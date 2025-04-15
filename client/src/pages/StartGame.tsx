@@ -54,10 +54,10 @@ const handleGuess = async () => {
     const response = await api.post(`/guess/${gameId}/`, { guess: guess });
 
     setHint(response.data.message);
+    setAttempts(response.data.attempts)
 
     if (response.data.message === 'correct') {
         setIsCorrect(true);
-        setAttempts(response.data.attempts)
     }
     } catch (error) {
     console.error('Error submitting guess', error);
@@ -102,11 +102,10 @@ return (
   </button>
 
   <div className="mt-4 text-center">
-    {hint && <p className="text-lg text-red-500">{hint}</p>}
-    {isCorrect && (
+    {hint == 'Correct!' ? (
       <p className="text-green-600 font-semibold mt-2">Correct! 🎉</p>
-    )}
-    <p className="text-sm mt-2">{attempts && 'Attempts: ' + attempts}</p>
+    ): <p className="text-lg text-red-500">{hint}</p>}
+    <p className="text-sm mt-2">{'Attempts: ' + attempts}</p>
   </div>
 </div>
 ); };

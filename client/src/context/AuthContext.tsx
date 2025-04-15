@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react'; 
+import { createContext, useState, useEffect, useContext, Dispatch, SetStateAction } from 'react'; 
 import api from '../utils/api';
 import { jwtDecode } from 'jwt-decode'
 
@@ -6,6 +6,8 @@ interface AppData {
     loginAuth: ({ username, password }: LoginCredientials) => void;
     isAuthenticated: boolean;
     isLoading: boolean;
+    showMsg: boolean;
+    setShowMsg: Dispatch<SetStateAction<boolean>>;
 }
 
 export interface LoginCredientials {
@@ -17,6 +19,7 @@ export const AuthContext = createContext<AppData | null>(null);
 export const AuthProvider = ({ children }: {children: React.ReactNode}) => { 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const[isLoading, setIsLoading] = useState(true)
+    const[showMsg, setShowMsg] = useState(true)
 
         useEffect(() => { 
             auth().catch(() => setIsAuthenticated(false))
@@ -76,7 +79,7 @@ export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
         
 
     return ( 
-        <AuthContext.Provider value={{ isAuthenticated, isLoading , loginAuth }}> 
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, showMsg, setShowMsg , loginAuth }}> 
             {children} 
         </AuthContext.Provider> 
         ); 

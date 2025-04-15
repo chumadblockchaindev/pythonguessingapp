@@ -6,6 +6,7 @@ urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('leaderboard/', LeaderboardView.as_view(), name='leaderboard'),
     path('history/', GameHistoryView.as_view(), name='game-history'),
+    # path('details', UserDetailView.as_view(), name='user-details'),
     path('profile/update/', ProfileUpdateView.as_view(), name='update-profile'),
     path('profile/change-password/',
          ChangePasswordView.as_view(), name='change-password'),

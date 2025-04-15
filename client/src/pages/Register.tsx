@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api'
 import { useAuth } from '../context/AuthContext'
 
@@ -9,6 +9,7 @@ const Register = () => {
   const passwordRef = useRef<HTMLInputElement>(null)
   const confirmpassRef = useRef<HTMLInputElement>(null)
   const[loading, setLoading] = useState(false)
+  const[error, setError] = useState('')
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate();
 
@@ -21,18 +22,22 @@ const Register = () => {
 
     setLoading(true)
 
+
     if (password != confirmPassword && username){
       alert('password does not match')
+      setLoading(false)
       return
     }
 
     try {
       await api.post('/api/register/', { username , email , password })
       .then(res=> {
-        if(res.status == 201) <Navigate to='login' replace />
+        if(res.status == 201) navigate("/login")
       })
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response?.data.password)
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -44,6 +49,9 @@ const Register = () => {
 
   return (
     <div className='flex flex-col justify-center items-center h-[100vh] space-y-2'>
+      <div className='border-2 border-red-600 py-4 px-12' hidden={!error}>
+        <h3 className='font-medium text-xl'>{error}</h3>
+      </div>
       <div className="absolute top-0 z-[-2] h-screen w-screen rotate-180 transform bg-white bg-[radial-gradient(60%_120%_at_50%_50%,hsla(0,0%,100%,0)_0,rgba(252,205,238,.5)_100%)]"></div>
       <h3 className='font-bold text-lg md:text-xl text-amber-600'>Register to Start Guessing</h3>
       <form onSubmit={handleSubmit} className='flex flex-col items-center space-y-4 p-12 rounded-3xl border-1 border-amber-400 drop-shadow-2xl'>

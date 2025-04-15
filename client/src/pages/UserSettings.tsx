@@ -6,9 +6,10 @@ const Settings = () => {
 const [status, setStatus] = useState('');
 
 useEffect(() => { 
+    // setFormData({ ...formData, username: res.data.username, email: res.data.email })
     async function getProfile () {
-    await api.get('/api/user/profile/') 
-    .then(res => setFormData({ ...formData, username: res.data.username, email: res.data.email })) 
+    await api.get('/api/user/details/') 
+    .then(res => console.log(res.data)) 
     .catch(err => console.error(err)); 
     }
     getProfile()

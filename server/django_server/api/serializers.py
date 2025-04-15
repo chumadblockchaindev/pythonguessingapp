@@ -51,7 +51,7 @@ class UserProfileStatsSerializer(serializers.ModelSerializer):
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        fields = 'all'
+        fields = '__all__'
 
 
 class GameHistorySerializer(serializers.ModelSerializer):

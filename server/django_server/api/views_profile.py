@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import update_session_auth_hash
-from .models import Game, UserProfile
+from .models import Game, UserProfile, UserDetail
 from .serializers import (GameHistorySerializer, UserProfileSerializer,
                           ProfileUpdateSerializer, PasswordChangeSerializer)
 
@@ -16,9 +16,18 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
 
+# class UserDetailView(APIView):
+#     serializer_class = ProfileUpdateSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+#     def get(self, request):
+#         user = UserDetail.objects.filter(user=request.user)
+#         return Response(user, status=200)
+
+
 class LeaderboardView(generics.ListAPIView):
     queryset = UserProfile.objects.select_related(
-        'user').order_by('-best_score')
+        'user').order_by('best_score')
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.AllowAny]
 
@@ -28,7 +37,7 @@ class GameHistoryView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Game.objects.filter(user=self.request.user).order_by('-created_at')
+        return Game.objects.filter(user=self.request.user).order_by('created_at')
 
 
 class ProfileUpdateView(generics.UpdateAPIView):

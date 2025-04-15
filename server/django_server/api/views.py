@@ -45,9 +45,9 @@ class SubmitGuessView(APIView):
             game.save()
             return Response({'message': 'Correct!', 'attempts': game.attempts})
         elif guess < game.number_to_guess:
-            return Response({'message': 'Too low'})
+            return Response({'message': 'Too low', 'attempts': game.attempts})
         else:
-            return Response({'message': 'Too high'})
+            return Response({'message': 'Too high', 'attempts': game.attempts})
 
 
 class NotificationListView(generics.ListAPIView):

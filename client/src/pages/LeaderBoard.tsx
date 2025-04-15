@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'; 
 import api from '../utils/api';
 
-interface UserScore { username: string; best_score: number; total_wins: number; }
+interface UserScore { user: string; best_score: number; total_wins: number; total_games: number}
 
 const Leaderboard = () => { const [users, setUsers] = useState<UserScore[]>([]);
 
@@ -9,6 +9,7 @@ useEffect(() => {
   async function showLeaderBoard() {
    await api.get('/api/user/leaderboard/') 
     .then(res => {
+      console.log(res)
       setUsers(res.data)}) 
     .catch(err => console.error('Failed to load leaderboard', err)); 
   }
@@ -29,8 +30,9 @@ return (
     <tbody> 
       {users.map((user, idx) => ( 
         <tr key={idx} className="border-t"> 
-          <td className="p-2">{user.username}</td> 
+          <td className="p-2">{user.user}</td> 
           <td className="p-2">{user.best_score}</td> 
+          <td className="p-2">{user.total_games}</td>
           <td className="p-2">{user.total_wins}</td>
         </tr> 
         ))} 
